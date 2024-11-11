@@ -1,0 +1,24 @@
+name: traefik
+services:
+    traefik:
+        container_name: traefik
+        image: traefik:latest
+        restart: unless-stopped
+        networks:
+            - cloudflare_net
+            - passbolt_net
+            - keycloak_net
+        volumes:
+            - /run/user/1001/docker.sock:/var/run/docker.sock:ro
+            - ./traefik.yaml:/traefik.yaml:ro
+            - ./conf/:/etc/traefik/conf
+networks:
+    cloudflare_net:
+        name: cloudflare_net
+        external: true
+    passbolt_net:
+        name: passbolt_net
+        external: true
+    keycloak_net:
+        name: keycloak_net
+        external: true

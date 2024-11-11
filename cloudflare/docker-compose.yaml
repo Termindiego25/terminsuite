@@ -1,0 +1,14 @@
+name: cloudflare
+services:
+    cloudflare_tunnel:
+        container_name: cloudflare_tunnel
+        image: cloudflare/cloudflared:latest
+        restart: unless-stopped
+        command:
+            - tunnel
+            - run
+            - --token
+            - $token
+networks:
+    default:
+        name: cloudflare_net

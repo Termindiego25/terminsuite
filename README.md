@@ -39,8 +39,7 @@ This network setup across Raspberry Pi devices is configured as follows:
    - **Container Network**: Docker’s internal network handles communication between containers, isolating them from external access. **Cloudflared** serves as the only external entry point.
    - **Security Processing**: The **IDS tap** on the first device captures network traffic data, which is then forwarded to the **IDS/NIDS/IPS node** on the third Raspberry Pi for comprehensive threat analysis and response.
 
-#### 4. **Security Recommendation: Rootless Docker**
+### 4. **Security Recommendations**
 
-To enhance security and adhere to the **principle of least privilege**, it is recommended to run Docker in **rootless mode**. Running Docker as a non-root user minimizes the risk of privilege escalation attacks and reduces the attack surface of the container environment.
-
-For setup instructions, refer to the official Docker documentation on [Rootless Docker Installation](https://docs.docker.com/engine/security/rootless).
+   - **Rootless Docker**: To follow the principle of least privilege and reduce security risks, it is recommended to run Docker in **rootless mode**. This configuration minimizes the potential for privilege escalation attacks and enhances the security of the container environment. For setup details, refer to the [Rootless Docker Installation Guide](https://docs.docker.com/engine/security/rootless).
+   - **Docker Secrets**: To securely handle credentials and sensitive information, this setup makes use of **Docker Secrets**. By storing sensitive data encrypted and making it available only to necessary services, Docker Secrets reduces exposure risks. For more information, see the [Docker Secrets documentation](https://docs.docker.com/engine/swarm/secrets).

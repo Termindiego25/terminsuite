@@ -1,0 +1,29 @@
+global:
+  sendAnonymousUsage: false
+log:
+  level: INFO
+  format: common
+providers:
+  docker:
+    endpoint: 'unix:///var/run/docker.sock'
+    watch: true
+    exposedByDefault: false
+#    swarmMode: false
+  file:
+    directory: /etc/traefik/conf/
+    watch: true
+api:
+  dashboard: false
+  debug: false
+#  insecure: true
+entryPoints:
+  web:
+    address: ':80'
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    address: ':443'
