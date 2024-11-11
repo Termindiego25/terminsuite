@@ -38,3 +38,9 @@ This network setup across Raspberry Pi devices is configured as follows:
    - **WiFi Authentication**: Users connecting to the network's WiFi are authenticated through **FreeRADIUS**, also using **OpenLDAP** for credential verification.
    - **Container Network**: Docker’s internal network handles communication between containers, isolating them from external access. **Cloudflared** serves as the only external entry point.
    - **Security Processing**: The **IDS tap** on the first device captures network traffic data, which is then forwarded to the **IDS/NIDS/IPS node** on the third Raspberry Pi for comprehensive threat analysis and response.
+
+#### 4. **Security Recommendation: Rootless Docker**
+
+To enhance security and adhere to the **principle of least privilege**, it is recommended to run Docker in **rootless mode**. Running Docker as a non-root user minimizes the risk of privilege escalation attacks and reduces the attack surface of the container environment.
+
+For setup instructions, refer to the official Docker documentation on [Rootless Docker Installation](https://docs.docker.com/engine/security/rootless).
