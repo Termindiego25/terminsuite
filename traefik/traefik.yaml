@@ -27,3 +27,17 @@ entryPoints:
           permanent: true
   websecure:
     address: ':443'
+    http:
+      tls:
+        certResolver: cloudflare
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: "admin@domain.com"  # ACME email
+      storage: "/ssl/acme.json"  # Certificates storage
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 0
+        resolvers:
+          - "1.1.1.1:53"
+          - "8.8.8.8:53"

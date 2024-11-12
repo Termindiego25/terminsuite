@@ -4,14 +4,18 @@ services:
         container_name: traefik
         image: traefik:latest
         restart: unless-stopped
+        env_file:
+            - traefik.env
         networks:
             - cloudflare_net
             - passbolt_net
             - keycloak_net
+            - pihole_net
         volumes:
             - /run/user/1001/docker.sock:/var/run/docker.sock:ro
             - ./traefik.yaml:/traefik.yaml:ro
             - ./conf/:/etc/traefik/conf
+            - ./ssl:/ssl
 networks:
     cloudflare_net:
         name: cloudflare_net
@@ -21,4 +25,7 @@ networks:
         external: true
     keycloak_net:
         name: keycloak_net
+        external: true
+    pihole_net:
+        name: pihole_net
         external: true
