@@ -4,11 +4,11 @@ This repository outlines the technical setup of a network of Raspberry Pi 5 devi
 
 ---
 
-### Technical Specification for the Raspberry Pi Network
+## Technical Specification for the Raspberry Pi Network
 
 This network consists of four Raspberry Pi 5 devices, each with specific responsibilities for managing network security, application traffic, DNS filtering, and identity management:
 
-#### 1. **Device Infrastructure**
+### 1. **Device Infrastructure**
 
    - **RPi5-4GB (Point of Entry: Network Security and Filtering)**:
      - **[Cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks)**: Establishes a secure tunnel for incoming external connections, enabling remote access to the network without exposing services directly.
@@ -22,8 +22,8 @@ This network consists of four Raspberry Pi 5 devices, each with specific respons
    - **RPi5-4GB (Identity and Access Management)**:
      - **OpenLDAP**: Provides a directory service for identity management, handling centralized user records for authentication purposes.
      - **FreeRADIUS**: Authenticates users connecting to the WiFi, validating credentials against OpenLDAP.
-     - **Keycloak**: Manages Single Sign-On (SSO) for applications, centralizing authentication and validating users through OpenLDAP.
-     - **Passbolt**: Serves as a secure password manager for storing and managing passwords, enhancing credential security across the network.
+     - **[Keycloak](https://www.keycloak.org/guides)**: Manages Single Sign-On (SSO) for applications, centralizing authentication and validating users through OpenLDAP.
+     - **[Passbolt](https://www.passbolt.com/docs/hosting)**: Serves as a secure password manager for storing and managing passwords, enhancing credential security across the network.
 
    - **RPi5-8GB (Storage, Media, and Security Processing)**:
      - **[Nextcloud](https://docs.nextcloud.com/server/latest/admin_manual)**: Offers cloud storage (NAS) for internal file access and synchronization, enabling secure and flexible file management.
@@ -41,11 +41,11 @@ This network consists of four Raspberry Pi 5 devices, each with specific respons
    - **Traffic Filtering and Inspection**: Incoming traffic is filtered by **ModSecurity (WAF)** and monitored by the **tap IDS** before being routed internally.
    - **Internal Routing and DNS Resolution**: Within the network, **Traefik** manages request routing, while **Pi-hole** provides DNS filtering and ad-blocking.
 
-#### 4. **Authentication and Application Access**
+### 4. **Authentication and Application Access**
    - **SSO Authentication**: **Keycloak** provides centralized SSO authentication, referencing **OpenLDAP** for user validation.
    - **WiFi Access Authentication**: Users connecting via WiFi are authenticated by **FreeRADIUS**, which also uses **OpenLDAP** for credential verification.
    - **Password Management**: **Passbolt** stores and manages passwords securely, ensuring encrypted access to sensitive credentials.
 
-#### 5. **Security Enhancements and Best Practices**
+### 5. **Security Enhancements and Best Practices**
    - **Docker Rootless Mode**: Docker containers operate in rootless mode to adhere to the principle of least privilege, reducing the risk of security vulnerabilities. [Installation Guide for Docker Rootless](https://docs.docker.com/engine/security/rootless/).
    - **Docker Secrets**: Sensitive data, including service passwords and credentials, are managed with Docker Secrets to enhance security by isolating and encrypting confidential information.
