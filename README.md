@@ -30,15 +30,15 @@ This network consists of four Raspberry Pi 5 devices, each with specific respons
      - **[Emby](https://emby.media/support/articles/Home.html)**: Acts as a DLNA media server, providing media streaming capabilities across the network.
      - **IDS/NIDS/IPS Node**: Receives and processes network traffic data from the **IDS tap** on the entry device, providing comprehensive intrusion detection and prevention.
 
-### 2. Network Device Interconnection
+### 2. Device Interconnection
 
-   - **Unmanaged Switch**: Aggregates connections from each Raspberry Pi, facilitating efficient traffic management within the local network.
    - **Router**: Acts as the primary internet gateway and firewall, regulating traffic flow between the internal network and the internet.
+   - **Unmanaged Switch**: Aggregates connections from each Raspberry Pi, facilitating efficient traffic management within the local network.
 
 ### 3. Connection Flow
 
    - **External Traffic Entry**: Traffic enters the network through **Cloudflared** on the entry device, creating a secure point of entry.
-   - **Traffic Filtering and Inspection**: Incoming traffic is filtered by **ModSecurity (WAF)** and monitored by the **tap IDS** before being routed internally.
+   - **Traffic Filtering and Inspection**: Incoming traffic is filtered by **ModSecurity (WAF)** and monitored by the **IDS tap** before being routed internally.
    - **Internal Routing and DNS Resolution**: Within the network, **Traefik** manages request routing, while **Pi-hole** provides DNS filtering and ad-blocking.
 
 ### 4. **Authentication and Application Access**
