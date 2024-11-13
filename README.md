@@ -47,5 +47,5 @@ This network consists of four Raspberry Pi 5 devices, each with specific respons
    - **Password Management**: **Passbolt** stores and manages passwords securely, ensuring encrypted access to sensitive credentials.
 
 ### 5. **Security Enhancements and Best Practices**
-   - **Docker Rootless Mode**: Docker containers operate in rootless mode to adhere to the principle of least privilege, reducing the risk of security vulnerabilities. [Installation Guide for Docker Rootless](https://docs.docker.com/engine/security/rootless/).
-   - **Docker Secrets**: Sensitive data, including service passwords and credentials, are managed with Docker Secrets to enhance security by isolating and encrypting confidential information.
+   - **Docker Rootless**: To follow the principle of least privilege and reduce security risks, it is recommended to run Docker in **rootless mode**. This configuration minimizes the potential for privilege escalation attacks and enhances the security of the container environment. For setup details, refer to the [Rootless Docker Installation Guide](https://docs.docker.com/engine/security/rootless).
+   - **Docker Secrets**: To securely handle credentials and sensitive information, this setup makes use of **Docker Secrets**. By storing sensitive data encrypted and making it available only to necessary services, Docker Secrets reduces exposure risks. For more information, see the [Docker Secrets documentation](https://docs.docker.com/engine/swarm/secrets).
