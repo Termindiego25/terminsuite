@@ -1,4 +1,4 @@
-# Termin-Suite: Raspberry Pi Network with Open-Source Applications
+# TerminSuite: Raspberry Pi Network with Open-Source Applications
 
 This repository outlines the technical setup of a network of Raspberry Pi 5 devices configured with Docker containers to manage a suite of open-source applications. The network is designed to support secure and efficient operations with services for authentication, storage, DNS, traffic inspection, and media streaming. Each device has a specific role within a security-focused architecture that leverages centralized authentication, traffic filtering, and Docker Secrets to enhance security and efficiency.
 
@@ -11,7 +11,7 @@ This network consists of four Raspberry Pi 5 devices, each with specific respons
 ### 1. **Device Infrastructure**
 
    - **RPi5-4GB (Point of Entry: Network Security and Filtering)**:
-     - **[Cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks)**: Establishes a secure tunnel for incoming external connections, enabling remote access to the network without exposing services directly.
+     - **[Cloudflared](cloudflare)**: Establishes a secure tunnel for incoming external connections, enabling remote access to the network without exposing services directly.
      - **ModSecurity**: Acts as a Web Application Firewall (WAF) to filter and block malicious web traffic based on predefined security rules.
      - **IDS tap**: Captures network traffic for real-time intrusion detection, forwarding data to the **IDS/NIDS/IPS node** for in-depth and comprehensive analysis.
 
