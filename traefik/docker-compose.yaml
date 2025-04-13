@@ -8,9 +8,10 @@ services:
             - traefik.env
         networks:
             - cloudflare_net
-            - passbolt_net
-            - keycloak_net
-            - pihole_net
+#            - passbolt_net
+#            - keycloak_net
+#            - pihole_net
+#            - emby_net
         volumes:
             - /run/user/1001/docker.sock:/var/run/docker.sock:ro
             - ./traefik.yaml:/traefik.yaml:ro
@@ -28,4 +29,7 @@ networks:
         external: true
     pihole_net:
         name: pihole_net
+        external: true
+    pihole_net:
+        name: emby_net
         external: true

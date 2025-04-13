@@ -42,4 +42,6 @@ After the tunnel is active, configure specific applications to route securely th
 9. Enter either the Docker container name or the internal address and port for the application within your local network.
 10. Save the hostname configuration.
 
+---
+
 With this basic setup, Cloudflare will automatically create a DNS entry and tunnel configuration, enabling secure, direct access to your internal services. For advanced options and custom configurations, such as HTTPS tunnels and SSL certificate management, refer to [Cloudflare's documentation](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks).
