@@ -46,7 +46,7 @@ TerminSuite provides a robust, open-source platform for managing network securit
 - **RPi5-8GB (Media, Storage, and Radio)**:
 
   - **[Nextcloud](https://docs.nextcloud.com/server/latest/admin_manual)**: Offers cloud storage (NAS) for internal file access and synchronization, enabling secure and flexible file management.
-  - **[Emby](https://emby.media/support/articles/Home.html)**: Acts as a DLNA media server, providing media streaming capabilities across the network.
+  - **[Emby](https://github.com/Termindiego25/terminsuite/blob/main/emby)**: Acts as a DLNA media server, providing media streaming capabilities across the network.
   - **AzuraCast**: Powers a fully-featured online radio station, automating music playback and supporting live broadcasts.
   - **Falco**: Monitors for any suspicious activity on the system and its containers.
 
