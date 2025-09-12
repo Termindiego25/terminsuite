@@ -30,6 +30,6 @@ networks:
     pihole_net:
         name: pihole_net
         external: true
-    pihole_net:
+    emby_net:
         name: emby_net
         external: true
