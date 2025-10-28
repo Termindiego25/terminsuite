@@ -1,0 +1,48 @@
+# ================================================
+# TerminSuite - Cloudflared Container Configuration
+# ================================================
+# Description:
+#   This compose file deploys Cloudflare's Cloudflared
+#   tunnel connector for secure, encrypted access to
+#   internal TerminSuite services.
+#
+#   The container reads the tunnel token from a Docker
+#   Secret (see `secrets/cf_token.txt`) to avoid exposing
+#   credentials as environment variables.
+# ================================================
+
+name: cloudflared
+
+services:
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    # Use Docker Secret for token authentication
+    secrets:
+      - cf_token
+    command:
+      - tunnel
+      - run
+      - --token-file
+      - /run/secrets/cf_token
+    networks:
+      - cloudflared_net
+
+# ------------------------------------------------
+# Docker Secret Definition
+# ------------------------------------------------
+# The file defined here must exist locally before running
+# 'docker compose up'. It will be securely mounted inside
+# the container at runtime.
+# ------------------------------------------------
+secrets:
+  cf_token:
+    file: secrets/cf_token.txt
+
+# ------------------------------------------------
+# Docker Network Definition
+# ------------------------------------------------
+networks:
+  cloudflared_net:
+    name: cloudflared_net
