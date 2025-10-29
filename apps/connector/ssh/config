@@ -1,0 +1,15 @@
+# SSH client configuration for TerminSuite Connector
+
+Host rpi5b
+    HostName 192.168.1.3
+    User docker
+    IdentityFile /ssh/rpi5b.key
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+
+Host rpi5c
+    HostName 192.168.1.4
+    User docker
+    IdentityFile /ssh/rpi5c.key
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null

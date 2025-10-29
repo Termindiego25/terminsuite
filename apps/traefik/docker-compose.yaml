@@ -20,6 +20,7 @@ services:
       - traefik.env
     networks:
       - cloudflared_net
+      - connector_net
     volumes:
       - /run/user/1001/docker.sock:/var/run/docker.sock:ro
       - ./traefik.yaml:/traefik.yaml:ro
@@ -32,4 +33,7 @@ services:
 networks:
   cloudflared_net:
     name: cloudflared_net
+    external: true
+  connector_net:
+    name: connector_net
     external: true

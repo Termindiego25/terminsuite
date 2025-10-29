@@ -2,14 +2,15 @@
 
 ## 🧭 Overview
 
-Traefik is the **reverse proxy and entrypoint gateway** for TerminSuite.
-It securely routes all incoming connections (proxied through **Cloudflared**) to the corresponding internal services running in Docker containers.
+**Traefik** acts as the **reverse proxy and secure entrypoint gateway** for TerminSuite.
+It handles incoming connections (proxied through **Cloudflared**) and routes them to internal or remote Dockerized services across the TerminSuite network.
 
 This configuration:
 
-* Uses **Cloudflare DNS-01 challenge** for automatic SSL certificate issuance.
-* Includes **strict TLS policies** and **security headers**.
-* Integrates with the Docker socket to dynamically detect services.
+* Uses the **Cloudflare DNS-01 challenge** for automatic SSL/TLS certificate management.
+* Applies **strict TLS policies** and **security headers** for enhanced protection.
+* Dynamically detects Docker containers through the Docker socket.
+* Optionally connects to remote services via preconfigured SSH tunnels (defined in `/conf/sites/`).
 
 ---
 
@@ -24,7 +25,7 @@ traefik
 └── conf/                     # Additional middleware and TLS configuration
     ├── headers.yaml
     ├── tls.yaml
-    └── sites/                # (Optional) Virtual host definitions
+    └── sites/                # Individual site/router definitions (e.g. app.domain.com)
 ```
 
 ---
@@ -33,34 +34,35 @@ traefik
 
 ### 1️⃣ Configure the Cloudflare Token
 
-Traefik uses the **Cloudflare DNS-01 challenge** to automatically issue and renew SSL certificates via Let's Encrypt.
-To do this, you must create a **Cloudflare API Token** with limited permissions.
+Traefik uses the **Cloudflare DNS-01 challenge** to automatically issue and renew SSL certificates via Let’s Encrypt.
 
 #### Steps to create the API Token:
 
-1. Go to your [Cloudflare Dashboard → My Profile → API Tokens](https://dash.cloudflare.com/profile/api-tokens).
-2. Click on **“Create Token”**.
-3. Choose **“Use template”** from the **“Edit zone DNS”** API token template or create a custom token.
-4. Under **Permissions**, select:
-   * Zone → DNS → Edit
-5. Under **Zone Resources**, select:
-   * Include → All zones (or specific zone)
-6. Click **Continue to summary → Create Token**.
-7. Copy the generated token.
+1. Go to your [Cloudflare Dashboard → My Profile → API Tokens](https://dash.cloudflare.com/profile/api-tokens)
+2. Click **“Create Token”**
+3. Choose the **“Edit zone DNS”** template or create a custom token
+4. Under **Permissions**, set:
 
-> ⚠️ Keep this token secret. It grants permission to modify DNS records in your Cloudflare account.
+   * Zone → DNS → Edit
+5. Under **Zone Resources**, set:
+
+   * Include → All zones (or the specific zone you’ll use)
+6. Click **Continue to summary → Create Token**
+7. Copy the generated token
+
+> ⚠️ **Important:** Keep this token private — it grants permission to modify DNS records in your Cloudflare account.
 
 ---
 
 ### 2️⃣ Configure Environment Variables
 
-The `traefik.env` file must contain your **Cloudflare DNS API token**:
+Create a `.env` file named `traefik.env` containing your Cloudflare DNS API token:
 
 ```bash
 CF_DNS_API_TOKEN=$CF_DNS_API_TOKEN
 ```
 
-> ⚠️ The token must have **Zone:DNS:Edit** permissions within Cloudflare.
+> The token must have **Zone:DNS:Edit** permissions in Cloudflare.
 
 ---
 
@@ -73,22 +75,50 @@ docker compose up -d
 ```
 
 This will:
+
 * Start the Traefik service.
-* Automatically connect to the shared `cloudflared_net` network.
-* Request certificates via the Cloudflare DNS-01 challenge.
-* Expose HTTPS on port `4433` (for internal routing).
+* Connect automatically to the `cloudflared_net` network.
+* Request and manage SSL certificates via the Cloudflare DNS-01 challenge.
+* Expose HTTPS internally on port `4433` for secure routing.
 
 ---
 
-### 4️⃣ Verify Logs
+### 4️⃣ Add Site Definitions
 
-You can check that Traefik is running properly with:
+Each service (local or remote) is defined through a YAML file inside `conf/sites/`.
+For example:
+
+```yaml
+http:
+  routers:
+    app:
+      entryPoints:
+        - websecure
+      rule: "Host(`app.domain.com`)"
+      service: app
+      tls:
+        certresolver: cloudflare
+
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - url: "http://$CONTAINER_NAME:$PORT$"
+```
+
+This configuration maps the hostname `app.domain.com` to the corresponding service exposed internally (e.g. via the **Connector** container’s SSH tunnels).
+
+---
+
+### 5️⃣ Verify Logs
+
+To confirm proper operation:
 
 ```bash
 docker logs -f traefik
 ```
 
-If successful, you should see:
+If successful, you should see logs such as:
 
 ```
 ... Successfully obtained new certificate from ACME provider ...
@@ -104,7 +134,7 @@ To stop and remove the container:
 docker compose down -v
 ```
 
-To remove all data (including certificates):
+To remove all stored SSL certificates:
 
 ```bash
 rm -rf ssl/
@@ -118,25 +148,26 @@ rm -rf ssl/
 
 * Enforces **TLS 1.2+**
 * Uses **strong cipher suites**
-* Enforces **SNI strict mode**
+* Enables **SNI strict mode**
 * Prefers modern elliptic curves (`P384`, `P521`)
 
 ### Security Headers (`conf/headers.yaml`)
 
 * Denies iframe embedding (`FrameDeny`)
-* Enables `XSS`, `CSP`, and `HSTS` protections
+* Enables XSS, CSP, and HSTS protections
 * Applies restrictive `ReferrerPolicy` and `PermissionsPolicy`
 * Enforces HTTPS-only transport for all subdomains
 
 ---
 
-## 📚 Official Documentation
+## 📚 References
 
 * 🔗 [Traefik Documentation](https://doc.traefik.io/traefik/)
 * 🔗 [Cloudflare DNS-01 Challenge Docs](https://doc.traefik.io/traefik/https/acme/#dnschallenge)
 * 🔗 [Cloudflare API Tokens Guide](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/)
+* 🔗 [Traefik File Provider Reference](https://doc.traefik.io/traefik/providers/file/)
 
 ---
 
-**Maintainer:** Termindiego25
+**Maintainer:** [Termindiego25](https://github.com/Termindiego25)
 **Part of:** [TerminSuite Project](https://github.com/Termindiego25/terminsuite)

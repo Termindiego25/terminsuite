@@ -1,0 +1,15 @@
+http:
+  routers:
+    app:
+      entryPoints:
+        - websecure
+      rule: "Host(`app.domain.com`)"
+      service: app
+      tls:
+        certresolver: cloudflare
+
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - url: "http://$CONTAINER_NAME:$PORT"

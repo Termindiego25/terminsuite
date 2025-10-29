@@ -1,4 +1,4 @@
-# TerminSuite: Configuring Emby Server
+# Emby setup (TerminSuite ...)
 
 ## About Emby
 Emby is a media server designed to organize, stream, and manage your personal media content (movies, series, music, etc) across multiple devices. It offers powerful transcoding capabilities, user access control, and DLNA support, and integrates well into home-lab environments.
