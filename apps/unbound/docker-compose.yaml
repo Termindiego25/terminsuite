@@ -1,0 +1,36 @@
+# ================================================
+# TerminSuite - Unbound Container Configuration
+# ================================================
+# Description:
+#   Run Unbound as a validating, recursive DNS resolver
+#   intended to be used as upstream for Pi-hole.
+#
+# Notes:
+#  - Unbound listens on port 5335 by default (inside container).
+#  - For security and full functionality, run in standard (rootful) Docker.
+#  - Rootless Docker may break DNSSEC, UDP behavior or socket operations.
+# ================================================
+
+name: unbound
+
+services:
+  unbound:
+    container_name: unbound
+    image: mvance/unbound:latest
+    restart: unless-stopped
+    volumes:
+      - ./unbound:/opt/unbound/etc/unbound
+    healthcheck:
+      test: ["CMD-SHELL", "drill -D @127.0.0.1 -p 5335 cloudflare.com A | grep -q 'rcode: NOERROR'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - unbound_net
+
+# ------------------------------------------------
+# Docker Network Definition
+# ------------------------------------------------
+networks:
+  unbound_net:
+    name: unbound_net
