@@ -1,3 +1,11 @@
+# ================================================
+# TerminSuite - Traefik Security Headers
+# ================================================
+# Description:
+#   Middleware configuration enforcing advanced
+#   HTTP security headers for all routes.
+# ================================================
+
 http:
   middlewares:
     SslHeader:

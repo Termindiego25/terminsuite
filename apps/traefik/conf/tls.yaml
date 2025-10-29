@@ -1,3 +1,11 @@
+# ================================================
+# TerminSuite - Traefik TLS Configuration
+# ================================================
+# Description:
+#   Enforces TLS 1.2+, strict SNI validation,
+#   and secure cipher suites for all connections.
+# ================================================
+
 tls:
   options:
     default:

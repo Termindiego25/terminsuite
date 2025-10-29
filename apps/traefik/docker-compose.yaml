@@ -1,35 +1,32 @@
+# ================================================
+# TerminSuite - Traefik Container Configuration
+# ================================================
+# Description:
+#   This compose file deploys Traefik as the reverse proxy
+#   for TerminSuite, managing secure routing and certificates.
+#
+#   It integrates with Cloudflared (through cloudflared_net)
+#   and automatically issues certificates via Cloudflare DNS.
+# ================================================
+
 name: traefik
+
 services:
-    traefik:
-        container_name: traefik
-        image: traefik:latest
-        restart: unless-stopped
-        env_file:
-            - traefik.env
-        networks:
-            - cloudflare_net
-#            - passbolt_net
-#            - keycloak_net
-#            - pihole_net
-#            - emby_net
-        volumes:
-            - /run/user/1001/docker.sock:/var/run/docker.sock:ro
-            - ./traefik.yaml:/traefik.yaml:ro
-            - ./conf/:/etc/traefik/conf
-            - ./ssl:/ssl
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    restart: unless-stopped
+    env_file:
+      - traefik.env
+    networks:
+      - cloudflared_net
+    volumes:
+      - /run/user/1001/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yaml:/traefik.yaml:ro
+      - ./conf/:/etc/traefik/conf
+      - ./ssl:/ssl
+
 networks:
-    cloudflare_net:
-        name: cloudflare_net
-        external: true
-    passbolt_net:
-        name: passbolt_net
-        external: true
-    keycloak_net:
-        name: keycloak_net
-        external: true
-    pihole_net:
-        name: pihole_net
-        external: true
-    emby_net:
-        name: emby_net
-        external: true
+  cloudflared_net:
+    name: cloudflared_net
+    external: true

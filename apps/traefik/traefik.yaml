@@ -1,21 +1,33 @@
+# ================================================
+# TerminSuite - Traefik Core Configuration
+# ================================================
+# Description:
+#   Main configuration for Traefik reverse proxy,
+#   defining providers, logging, entry points,
+#   and certificate resolvers.
+# ================================================
+
 global:
   sendAnonymousUsage: false
+
 log:
   level: INFO
   format: common
+
 providers:
   docker:
     endpoint: 'unix:///var/run/docker.sock'
     watch: true
     exposedByDefault: false
-#    swarmMode: false
   file:
     directory: /etc/traefik/conf/
     watch: true
+
 api:
   dashboard: false
   debug: false
-#  insecure: true
+  # insecure: true   # Uncomment for local testing only
+
 entryPoints:
   web:
     address: ':80'
@@ -25,16 +37,18 @@ entryPoints:
           to: websecure
           scheme: https
           permanent: true
+
   websecure:
     address: ':443'
     http:
       tls:
         certResolver: cloudflare
+
 certificatesResolvers:
   cloudflare:
     acme:
-      email: "admin@domain.com"  # ACME email
-      storage: "/ssl/acme.json"  # Certificates storage
+      email: "admin@diegosr.es"
+      storage: "/ssl/acme.json"
       dnsChallenge:
         provider: cloudflare
         delayBeforeCheck: 0
