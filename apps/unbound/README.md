@@ -123,9 +123,9 @@ You can automate this with a cron task:
 
 ## 📚 References
 
-🔗 [Unbound Documentation](https://nlnetlabs.nl/documentation/unbound/unbound.conf/)
-🔗 [mvance/unbound Docker Image](https://hub.docker.com/r/mvance/unbound)
-🔗 [Pi-hole + Unbound Guide](https://docs.pi-hole.net/guides/unbound/)
+* 🔗 [Unbound Documentation](https://nlnetlabs.nl/documentation/unbound/unbound.conf/)
+* 🔗 [mvance/unbound Docker Image](https://hub.docker.com/r/mvance/unbound)
+* 🔗 [Pi-hole + Unbound Guide](https://docs.pi-hole.net/guides/unbound/)
 
 ---
 

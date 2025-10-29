@@ -139,8 +139,8 @@ All LDIFs are imported automatically during the **first container startup**.
 
 ## 📚 Official Documentation
 
-🔗 [Bitnami OpenLDAP Docs](https://hub.docker.com/r/bitnami/openldap)
-🔗 [OpenLDAP Project](https://www.openldap.org/)
+* 🔗 [Bitnami OpenLDAP Docs](https://hub.docker.com/r/bitnami/openldap)
+* 🔗 [OpenLDAP Project](https://www.openldap.org/)
 
 ---
 

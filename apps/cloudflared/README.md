@@ -99,7 +99,7 @@ Once the tunnel is active, configure routes to expose internal services:
 
 ## 📚 Official Documentation
 
-🔗 [Cloudflare Tunnel Documentation](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
+* 🔗 [Cloudflare Tunnel Documentation](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 
 ---
 

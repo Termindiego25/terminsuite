@@ -1,0 +1,49 @@
+# ---------------------------------------------
+# TerminSuite - PiHole Container Configuration
+# ---------------------------------------------
+# This stack deploys Pi-hole as the primary DNS server,
+# using Unbound as the local upstream recursive resolver.
+# Secrets and environment variables are used for secure configuration.
+# ---------------------------------------------
+
+name: pihole
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    hostname: termindns
+    restart: unless-stopped
+    env_file:
+      - pihole.env
+    networks:
+      - default
+      - unbound_net
+    secrets:
+      - web_password
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+    volumes:
+      - ./etc-pihole:/etc/pihole
+      - ./etc-dnsmasq.d:/etc/dnsmasq.d
+
+# ------------------------------------------------
+# Docker Secret Definition
+# ------------------------------------------------
+# The file defined here must exist locally before running
+# 'docker compose up'. It will be securely mounted inside
+# the container at runtime.
+# ------------------------------------------------
+secrets:
+  web_password:
+    file: secrets/web_password.txt
+
+# ------------------------------------------------
+# Docker Network Definition
+# ------------------------------------------------
+networks:
+  default:
+    name: pihole_net
+  unbound_net:
+    external: true
