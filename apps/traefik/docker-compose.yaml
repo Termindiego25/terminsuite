@@ -26,6 +26,9 @@ services:
       - ./conf/:/etc/traefik/conf
       - ./ssl:/ssl
 
+# ------------------------------------------------
+# Docker Network Definition
+# ------------------------------------------------
 networks:
   cloudflared_net:
     name: cloudflared_net

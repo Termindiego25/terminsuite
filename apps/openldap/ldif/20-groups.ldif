@@ -1,0 +1,11 @@
+dn: cn=admins,ou=groups,dc=domain,dc=com
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: admins
+uniqueMember: uid=openldap,ou=people,dc=domain,dc=com
+
+dn: cn=users,ou=groups,dc=domain,dc=com
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: users
+uniqueMember: uid=person,ou=people,dc=domain,dc=com

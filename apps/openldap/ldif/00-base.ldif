@@ -1,0 +1,16 @@
+dn: dc=domain,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: domain.com
+dc: domain
+
+dn: ou=people,dc=domain,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=domain,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: groups

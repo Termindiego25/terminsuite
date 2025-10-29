@@ -1,0 +1,23 @@
+dn: uid=openldap,ou=people,dc=domain,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+uid: openldap
+cn: OpenLDAP
+sn: User
+givenName: OpenLDAP
+mail: openldap@domain.com
+userPassword: {SSHA}$SSHA_PASWORD
+
+dn: uid=person,ou=people,dc=domain,dc=com
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+uid: person
+cn: Person
+sn: User
+givenName: Person
+mail: person@domain.com
+userPassword: {SSHA}$SSHA_PASSWORD

@@ -1,13 +1,13 @@
-# Cloudflared tunnel setup (with Docker Secrets)
+# Cloudflared setup (TerminSuite tunneled entry point)
 
-## 🧩 Overview
+## 🧭 Overview
 
 Cloudflared, part of Cloudflare’s Zero Trust suite, enables secure tunnels that connect private applications to the Cloudflare network without exposing internal IPs or opening firewall ports.
 In **TerminSuite**, this tunnel acts as the **main entry point** to the entire self-hosted ecosystem, routing all external traffic through Cloudflare’s secure global edge before reaching your Raspberry Pi devices.
 
 ---
 
-## ⚙️ Directory structure
+## 📁 Directory structure
 
 ```
 cloudflared/
@@ -46,7 +46,7 @@ The file must contain **only** the token string — no comments, headers, or ext
 > **Example placeholder:**
 >
 > ```
-> CLOUDFLARED_TUNNEL_TOKEN_EXAMPLE
+> $CLOUDFLARED_TUNNEL_TOKEN_EXAMPLE
 > ```
 
 ---

@@ -1,4 +1,4 @@
-# 🚦 TerminSuite - Traefik Reverse Proxy
+# Traefik Setup (TerminSuite Reverse Proxy)
 
 ## 🧭 Overview
 
@@ -29,7 +29,7 @@ traefik
 
 ---
 
-## ⚙️ Deployment
+## 🚀 Deployment
 
 ### 1️⃣ Configure the Cloudflare Token
 
@@ -46,13 +46,7 @@ To do this, you must create a **Cloudflare API Token** with limited permissions.
 5. Under **Zone Resources**, select:
    * Include → All zones (or specific zone)
 6. Click **Continue to summary → Create Token**.
-7. Copy the generated token and save it as `CF_DNS_API_TOKEN` inside your environment file.
-
-Example:
-
-```bash
-CF_DNS_API_TOKEN=your-cloudflare-token
-```
+7. Copy the generated token.
 
 > ⚠️ Keep this token secret. It grants permission to modify DNS records in your Cloudflare account.
 
@@ -63,7 +57,7 @@ CF_DNS_API_TOKEN=your-cloudflare-token
 The `traefik.env` file must contain your **Cloudflare DNS API token**:
 
 ```bash
-CF_DNS_API_TOKEN=BW1xXHqOd7Nj
+CF_DNS_API_TOKEN=$CF_DNS_API_TOKEN
 ```
 
 > ⚠️ The token must have **Zone:DNS:Edit** permissions within Cloudflare.

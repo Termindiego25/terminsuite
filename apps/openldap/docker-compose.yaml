@@ -1,32 +1,28 @@
 # ================================================
-# TerminSuite - Cloudflared Container Configuration
+# TerminSuite - OpenLDAP Service
 # ================================================
 # Description:
-#   This compose file deploys Cloudflare's Cloudflared
-#   tunnel connector for secure, encrypted access to
-#   internal TerminSuite services.
-#
-#   The container reads the tunnel token from a Docker
-#   Secret (see `secrets/cf_token.txt`) to avoid exposing
-#   credentials as environment variables.
+#   OpenLDAP provides a centralized directory for
+#   user and group management within TerminSuite.
 # ================================================
 
-name: cloudflared
+name: openldap
 
 services:
-  cloudflared:
-    container_name: cloudflared
-    image: cloudflare/cloudflared:latest
+  openldap:
+    image: bitnami/openldap:latest
+    container_name: openldap
     restart: unless-stopped
     secrets:
-      - cf_token
-    command:
-      - tunnel
-      - run
-      - --token-file
-      - /run/secrets/cf_token
+      - admin_username
+      - admin_password
+    env_file:
+      - openldap.env
+    volumes:
+      - ./ldif:/ldifs:ro
+      - ./data:/bitnami/openldap
     networks:
-      - cloudflared_net
+      - openldap_net
 
 # ------------------------------------------------
 # Docker Secret Definition
@@ -36,12 +32,14 @@ services:
 # the container at runtime.
 # ------------------------------------------------
 secrets:
-  cf_token:
-    file: secrets/cf_token.txt
+  admin_username:
+    file: ./secrets/admin_username.txt
+  admin_password:
+    file: ./secrets/admin_password.txt
 
 # ------------------------------------------------
 # Docker Network Definition
 # ------------------------------------------------
 networks:
-  cloudflared_net:
-    name: cloudflared_net
+  openldap_net:
+    name: openldap_net
