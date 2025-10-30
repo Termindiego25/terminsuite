@@ -1,6 +1,6 @@
 # Emby setup (TerminSuite Media Server)
 
-## Overview
+## 🧭 Overview
 
 Emby is a personal media server that organizes and streams your movies, series, and music across devices.
 Within **TerminSuite**, Emby serves as the **DLNA/NAS media frontend**, operating behind **Traefik** and accessible securely through the **Cloudflare Tunnel**.

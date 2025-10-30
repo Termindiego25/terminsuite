@@ -1,0 +1,93 @@
+# ==========================================
+# TerminSuite — Keycloak Stack
+# ==========================================
+# This Docker Compose file deploys Keycloak with a PostgreSQL backend,
+# integrates with OpenLDAP for user management, and supports SCIM
+# provisioning through a custom provider.
+# ==========================================
+
+name: keycloak
+
+services:
+  # =======================
+  # PostgreSQL database
+  # =======================
+  keycloak_db:
+    container_name: keycloak_db
+    image: postgres:latest
+    restart: unless-stopped
+    env_file:
+      - postgresql.env
+    secrets:
+      - db_database
+      - db_username
+      - db_password
+    volumes:
+      - keycloak_db_vol:/var/lib/postgresql/data
+
+  # =======================
+  # Keycloak server
+  # =======================
+  keycloak_server:
+    container_name: keycloak_server
+    build:
+      context: .
+    image: iam
+    restart: unless-stopped
+    depends_on:
+      - keycloak_db
+    env_file:
+      - keycloak.env
+    networks:
+      - default
+      - openldap_net
+    secrets:
+      - db_username
+      - db_password
+    volumes:
+      - keycloak_data_vol:/opt/keycloak/data # Persistent Keycloak data
+      - ./secrets/realms:/opt/keycloak/data/import # Realm import directory (JSON definitions)
+    command:
+      # Uncomment the line below when developing:
+      # - start-dev
+      # Use the following for production:
+      - start
+      - --optimized
+      - --import-realm
+      - --verbose
+      - --log-level=INFO
+    ports:
+      - "127.0.0.1:12443:8080" # Local binding for reverse proxy access
+
+# ------------------------------------------------
+# Docker Secret Definition
+# ------------------------------------------------
+# The file defined here must exist locally before running
+# 'docker compose up'. It will be securely mounted inside
+# the container at runtime.
+# ------------------------------------------------
+secrets:
+  db_database:
+    file: secrets/credentials/db_database.txt
+  db_username:
+    file: secrets/credentials/db_username.txt
+  db_password:
+    file: secrets/credentials/db_password.txt
+
+# ------------------------------------------------
+# Docker Volume Definition
+# ------------------------------------------------
+volumes:
+  keycloak_db_vol:
+    driver: local
+  keycloak_data_vol:
+
+# ------------------------------------------------
+# Docker Network Definition
+# ------------------------------------------------
+networks:
+  default:
+    name: keycloak_net
+  openldap_net:
+    name: openldap_net
+    external: true

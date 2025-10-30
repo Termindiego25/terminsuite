@@ -1,13 +1,13 @@
 # Connector Setup (TerminSuite SSH Tunnel Service)
 
-## Overview
+## 🧭 Overview
 
 The **Connector** service provides a secure, persistent SSH bridge between the internal TerminSuite infrastructure and remote Raspberry Pi nodes hosting additional components.
 It uses **AutoSSH** to automatically maintain tunnels and reconnect if a connection drops.
 
 ---
 
-## Architecture
+## 🧱 Architecture
 
 ```
 [Connector] ── SSH ──► [Remote RPi5 Nodes] → Remote Services
@@ -19,7 +19,7 @@ It uses **AutoSSH** to automatically maintain tunnels and reconnect if a connect
 
 ---
 
-## Directory Structure
+## 📁 Directory Structure
 
 ```
 /connector
@@ -34,7 +34,7 @@ It uses **AutoSSH** to automatically maintain tunnels and reconnect if a connect
 
 ---
 
-## Usage
+## 🚀 Deployment
 
 ### 1. Build and run
 
@@ -65,7 +65,7 @@ The ports defined in `entrypoint.sh` should appear as listening on `0.0.0.0`.
 
 ---
 
-## Security Recommendations
+## 🔐 Security Recommendations
 
 * Keep all SSH private keys with `chmod 600`.
 * Allow connections only from trusted internal IP ranges.
