@@ -59,7 +59,7 @@ unbound-anchor -a /opt/unbound/etc/unbound/var/root.key
 
 ---
 
-## 🛠️ Deployment
+## 🚀 Deployment
 
 1. **Start the container:**
 

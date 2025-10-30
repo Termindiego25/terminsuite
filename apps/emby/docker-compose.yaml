@@ -1,0 +1,35 @@
+# ==========================================
+# TerminSuite — Emby Server (Docker Compose)
+# ==========================================
+# This service hosts Emby, a personal media server used
+# to stream movies, series, and music within the TerminSuite ecosystem.
+#
+# Access is restricted to localhost and proxied securely
+# through Traefik and Cloudflare Tunnel.
+# ==========================================
+
+name: emby
+
+services:
+  emby:
+    container_name: emby
+    image: emby/embyserver_arm64v8:latest        # ARM64 build for Raspberry Pi 5
+    restart: unless-stopped
+    env_file:
+      - emby.env
+    volumes:
+      - ./config:/config                         # Persistent Emby configuration
+      - /mnt/storage/emby:/mnt/library            # Main media library (NAS mount)
+      - ./favicon.ico:/system/dashboard-ui/favicon.ico
+      - ./images:/system/dashboard-ui/images
+      - ./logowhite.png:/system/dashboard-ui/modules/themes/logowhite.png
+    devices:
+      - /dev/dri:/dev/dri                        # Expose GPU device for VAAPI acceleration
+    ports:
+      - "127.0.0.1:22443:8096"                   # Bind container to localhost only (Connector SSH tunnel)
+
+# ------------------------------------------------
+# Docker Network Definition
+# ------------------------------------------------
+networks:
+    - emby_net

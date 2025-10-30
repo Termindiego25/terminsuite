@@ -1,0 +1,23 @@
+# ==========================================
+# TerminSuite — Traefik Site Configuration
+# ==========================================
+# This file defines the Traefik router and service for Emby.
+# All traffic is encrypted with Cloudflare-issued certificates
+# and forwarded through the connector container to Emby.
+# ==========================================
+
+http:
+  routers:
+    emby:
+      entryPoints:
+        - websecure                             # HTTPS entrypoint
+      rule: "Host(`emby.domain.com`)"           # Replace with your Cloudflare-proxied domain
+      service: emby
+      tls:
+        certresolver: cloudflare                # Use Cloudflare certificate resolver
+
+  services:
+    emby:
+      loadBalancer:
+        servers:
+          - url: "http://emby:22443"             # Internal SSH tunnel port
