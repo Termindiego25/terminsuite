@@ -19,6 +19,7 @@ Keycloak provides centralized **authentication and identity management** for Ter
 
 ```
 /apps/keycloak
+├── backup_keycloak-realms.sh
 ├── docker-compose.yaml          # Docker stack definition
 ├── Dockerfile                   # Custom Keycloak image build
 ├── keycloak.env                 # Keycloak environment variables

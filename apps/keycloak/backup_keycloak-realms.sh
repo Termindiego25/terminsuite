@@ -1,4 +1,5 @@
 #!/bin/bash
+# backup_keycloak-realms
 # ============================================================
 # TerminSuite - Keycloak Realms Backup Script
 # ============================================================
