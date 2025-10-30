@@ -77,8 +77,8 @@ This allows Pi-hole to forward all DNS requests to Unbound, which resolves them 
 ## 📚 References
 
 * 🔗 [Pi-hole Official Documentation](https://docs.pi-hole.net/)
+* 🔗 [Pi-hole Docker repo](https://github.com/pi-hole/docker-pi-hole)
 * 🔗 [Pi-hole + Unbound Guide](https://docs.pi-hole.net/guides/unbound/)
-* 🔗 [Pi-hole Docker repo – Installing on Ubuntu or Fedora](https://github.com/pi-hole/docker-pi-hole/?tab=readme-ov-file#installing-on-ubuntu-or-fedora)
 
 ---
 

@@ -1,15 +1,15 @@
 http:
   routers:
-    app:
+    example:
       entryPoints:
         - websecure
-      rule: "Host(`app.domain.com`)"
-      service: app
+      rule: "Host(`example.domain.com`)"
+      service: aexamplepp
       tls:
         certresolver: cloudflare
 
   services:
-    app:
+    example:
       loadBalancer:
         servers:
-          - url: "http://$CONTAINER_NAME:$PORT"
+          - url: "http://connector:$PORT"

@@ -1,0 +1,23 @@
+# ==========================================
+# TerminSuite — Traefik Site Configuration
+# ==========================================
+# This file defines the Traefik router and service for PiHole.
+# All traffic is encrypted with Cloudflare-issued certificates
+# and forwarded through the connector container to PiHole.
+# ==========================================
+
+http:
+  routers:
+    pihole:
+      entryPoints:
+        - websecure                             # HTTPS entrypoint
+      rule: "Host(`pihole.domain.com`)"           # Replace with your Cloudflare-proxied domain
+      service: pihole
+      tls:
+        certresolver: cloudflare                # Use Cloudflare certificate resolver
+
+  services:
+    pihole:
+      loadBalancer:
+        servers:
+          - url: "http://pihole:80"             # Internal SSH tunnel port
