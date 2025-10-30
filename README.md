@@ -14,7 +14,7 @@ It provides centralized authentication, DNS filtering, secure remote access, and
 5. [Authentication and Application Access](#5-authentication-and-application-access)
 6. [Security Overview](#6-security-overview)
 7. [Security Enhancements and Best Practices](#7-security-enhancements-and-best-practices)
-8. [🧭 Roadmap — Planned Services](#8-roadmap--planned-services)
+8. [Planned Services](#8-planned-services)
 
 ---
 
@@ -137,7 +137,7 @@ TerminSuite’s security model is based on **defense-in-depth** and the **princi
 
 ---
 
-## 8. 🧭 Roadmap — Planned Services
+## 8. Planned Services
 
 The following services are planned or under development for future TerminSuite versions:
 
