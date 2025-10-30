@@ -153,6 +153,6 @@ The following services are planned or under development for future TerminSuite v
 
 ---
 
-✅ **Status:** Stable
-🔧 **Last Updated:** October 2025
+✅ **Status:** Stable <br />
+🔧 **Last Updated:** October 2025 <br />
 📦 **Maintainer:** [Termindiego25](https://github.com/Termindiego25)
