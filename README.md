@@ -1,6 +1,6 @@
 # TerminSuite: Raspberry Pi Network with Open-Source Applications
 
-**TerminSuite** is a modular infrastructure built on **Raspberry Pi 5** devices and **Docker containers**, designed to host and secure a suite of open-source services.
+**TerminSuite** is a modular infrastructure built on **Raspberry Pi 5** devices and **Docker containers**, designed to host and secure a suite of open-source services.  
 It provides centralized authentication, DNS filtering, secure remote access, and self-hosted media capabilities — optimized for **home labs**, **educational environments**, or **small-scale networks**.
 
 ---
@@ -20,139 +20,131 @@ It provides centralized authentication, DNS filtering, secure remote access, and
 
 ## 1. Introduction
 
-**TerminSuite** provides a secure and efficient environment for managing open-source applications through a distributed network of Raspberry Pi devices.
+**TerminSuite** provides a secure and efficient environment for managing open-source applications through a distributed network of **Raspberry Pi 5** devices.  
 The setup is containerized using **Docker**, ensuring modularity, easy updates, and resource isolation.
 
 The core services currently implemented include:
 
 * **DNS filtering and privacy protection (Pi-hole + Unbound)**
 * **Reverse proxy and TLS termination (Traefik)**
-* **Secure tunnel access (Cloudflared)**
+* **Secure tunnel access (Cloudflared + Connector)**
 * **Centralized authentication (OpenLDAP + Keycloak)**
 * **Password management (Passbolt)**
 * **Self-hosted media service (Emby)**
 
-Each Raspberry Pi serves a specific purpose, and all communicate internally through a private Docker network managed by **Traefik**.
+Each Raspberry Pi serves a specific purpose and communicates internally through a private Docker network managed by **Traefik**.
 
 ---
 
 ## 2. Device Infrastructure
 
-### 🧠 **[RPi5A](https://github.com/Termindiego25/terminsuite/tree/main/nodes/rpi5a) — DNS and Network Filtering**
+### 🧠 [**RPi5A — DNS and Network Filtering (4 GB)**](./nodes/rpi5a)
 
-* **[Pi-hole](https://github.com/Termindiego25/terminsuite/tree/main/services/pihole)**: Local DNS resolver and ad-blocker, filtering unwanted domains and providing privacy across the network.
-* **[Unbound](https://github.com/Termindiego25/terminsuite/tree/main/services/unbound)**: Recursive DNS resolver working alongside Pi-hole to ensure encrypted, independent DNS resolution.
+This node handles DNS resolution, ad-blocking, and privacy enforcement across the internal network.
 
----
-
-### 🌐 **[RPi5B](https://github.com/Termindiego25/terminsuite/tree/main/nodes/rpi5b) — Secure Entry and Routing**
-
-* **[Cloudflared](https://github.com/Termindiego25/terminsuite/tree/main/services/cloudflared)**: Provides encrypted tunnels to expose internal services securely through Cloudflare without port forwarding.
-* **[Connector](https://github.com/Termindiego25/terminsuite/tree/main/services/connector)**: Manages Cloudflared tunnel configurations and connections.
-* **[Traefik](https://github.com/Termindiego25/terminsuite/tree/main/services/traefik)**: Acts as the reverse proxy, handling SSL termination and routing traffic to internal containers.
+* **[Pi-hole](./services/pihole)** — Local DNS resolver and network-wide ad-blocker, filtering unwanted domains and telemetry.  
+* **[Unbound](./services/unbound)** — Recursive DNS resolver that ensures encrypted, independent lookups without relying on external providers.
 
 ---
 
-### 🔐 **[RPi5C](./nodes/rpi5c) — Identity and Access Management**
+### 🌐 [**RPi5B — Secure Entry and Routing (4 GB)**](./nodes/rpi5b)
 
-* **[OpenLDAP](./services/openldap)**: Directory service for managing users, groups, and authentication records.
-* **[Keycloak](./services/keycloak)**: Centralized SSO platform integrating with OpenLDAP for unified access management.
-* **[Passbolt](./services/passbolt)**: Self-hosted password manager for secure credential storage and sharing.
+This device manages secure ingress to the TerminSuite network via Cloudflare tunnels and routes traffic internally.
+
+* **[Cloudflared](./services/cloudflared)** — Establishes encrypted tunnels for secure external access without port forwarding.  
+* **[Connector](./services/connector)** — Simplifies Cloudflared configuration management and tunnel maintenance.  
+* **[Traefik](./services/traefik)** — Reverse proxy that handles SSL termination and routes requests to internal containers.
 
 ---
 
-### 🎬 **[RPi5D](https://github.com/Termindiego25/terminsuite/tree/main/nodes/rpi5d) — Media Server**
+### 🔐 [**RPi5C — Identity and Access Management (4 GB)**](./nodes/rpi5c)
 
-* **[Emby](https://github.com/Termindiego25/terminsuite/tree/main/services/emby)**: DLNA-compatible media server for internal streaming and library management.
+This node manages user authentication, directory services, and credential storage for the entire suite.
+
+* **[OpenLDAP](./services/openldap)** — Centralized directory for user and group management.  
+* **[Keycloak](./services/keycloak)** — Unified Single Sign-On (SSO) platform integrated with OpenLDAP for identity validation.  
+* **[Passbolt](./services/passbolt)** — Self-hosted password manager enabling secure storage and sharing of credentials.
+
+---
+
+### 🎬 [**RPi5D — Media Server (8 GB)**](./nodes/rpi5d)
+
+This node is responsible for hosting multimedia services within the internal network.
+
+* **[Emby](./services/emby)** — DLNA-compatible media server for private streaming, transcoding, and library organization.
 
 ---
 
 ## 3. Device Interconnection
 
-* **Router**:
+* **Router**  
+  Acts as the main gateway and firewall, routing DNS queries to **Pi-hole** and managing inbound/outbound traffic.
 
-  * Acts as the main gateway and firewall.
-  * Handles all outbound/inbound traffic and routes DNS queries to the Pi-hole instance.
-
-* **Internal Docker Network**:
-
-  * Enables isolated communication between containers on the same Raspberry Pi or across devices.
-  * **No direct exposure** — all external access is handled via **Cloudflared** → **Traefik** → **Application**.
+* **Internal Docker Network**  
+  Enables isolated communication between containers across devices.  
+  No service is directly exposed — all external access passes through:  
+  **Cloudflared → Traefik → Application**
 
 ---
 
 ## 4. Connection Flow
 
-1. **External Access**
-
-   * Users connect through **Cloudflared**, establishing a secure tunnel managed by Cloudflare.
-
-2. **Traffic Routing**
-
-   * **Traefik** receives incoming requests, validates routing rules, and forwards them to the correct container.
-
-3. **DNS Resolution**
-
-   * **Pi-hole** handles DNS requests, filtering ads and trackers.
-   * **Unbound** recursively resolves domains, ensuring privacy and independence from third-party DNS servers.
-
-4. **Authentication**
-
-   * **Keycloak** manages logins and integrates with **OpenLDAP** for user validation.
-
-5. **Service Access**
-
-   * Once authenticated, users can access services such as **Passbolt** (for password management) or **Emby** (for internal media streaming).
+1. **External Access** — Users connect via **Cloudflared**, establishing a secure tunnel managed by Cloudflare.  
+2. **Traffic Routing** — **Traefik** receives incoming requests, applies routing rules, and forwards them to the target container.  
+3. **DNS Resolution** — **Pi-hole** filters unwanted domains, and **Unbound** performs recursive lookups.  
+4. **Authentication** — **Keycloak** manages logins and validates identities against **OpenLDAP**.  
+5. **Service Access** — Authenticated users can securely access services such as **Passbolt** or **Emby**.
 
 ---
 
 ## 5. Authentication and Application Access
 
-* **SSO (Single Sign-On)** via **Keycloak**, referencing **OpenLDAP** as the identity provider.
-* **Role-based Access Control (RBAC)** managed through Keycloak groups.
-* **Passbolt** provides encrypted password sharing among authenticated users.
-* **All user data and credentials remain within the internal network**, never exposed externally.
+* **Single Sign-On (SSO)** via **Keycloak**, using **OpenLDAP** as the identity source.  
+* **Role-Based Access Control (RBAC)** implemented through Keycloak groups.  
+* **Passbolt** enables encrypted credential sharing among authenticated users.  
+* All sensitive data remains confined within the internal network.
 
 ---
 
 ## 6. Security Overview
 
-TerminSuite’s security model is based on **defense-in-depth** and the **principle of least privilege**:
+TerminSuite applies **defense-in-depth** and the **principle of least privilege** across all layers:
 
-* **Cloudflared** eliminates the need for open ports, reducing the external attack surface.
-* **Traefik** automatically manages TLS certificates and reverse proxy routing through Cloudflare tunnels.
-* **Pi-hole + Unbound** enforce local DNS privacy and prevent exposure to public resolvers.
-* **OpenLDAP + Keycloak** centralize authentication and user control.
+* **Cloudflared** eliminates the need for open ports, minimizing external attack surfaces.  
+* **Traefik** provides SSL termination and routing exclusively through Cloudflare tunnels.  
+* **Pi-hole + Unbound** enforce DNS privacy and block malicious domains.  
+* **OpenLDAP + Keycloak** centralize authentication and authorization.  
+* **Passbolt** secures credential storage and sharing via strong cryptography.
 
 ---
 
 ## 7. Security Enhancements and Best Practices
 
-* **Docker Rootless Mode**: Minimizes privilege escalation risks.
-  → [Rootless Docker Guide](https://docs.docker.com/engine/security/rootless/)
-* **Docker Secrets**: Protects sensitive credentials (LDAP binds, API keys, SSO secrets).
-  → [Docker Secrets Documentation](https://docs.docker.com/engine/swarm/secrets/)
-* **TLS Certificates via Cloudflare**: All traffic is encrypted end-to-end using Cloudflare-managed certificates.
-* **Automated Backups**: LDAP and Passbolt databases are periodically backed up for disaster recovery.
+* **Rootless Docker Mode** — Reduces privilege escalation risks.  
+  → [Rootless Docker Guide](https://docs.docker.com/engine/security/rootless/)  
+* **Docker Secrets** — Protects credentials such as LDAP binds and API keys.  
+  → [Docker Secrets Documentation](https://docs.docker.com/engine/swarm/secrets/)  
+* **TLS Certificates via Cloudflare** — Ensures end-to-end encryption and automatic renewal.  
+* **Automated Backups** — LDAP and Passbolt databases are periodically backed up for disaster recovery.
 
 ---
 
 ## 8. Planned Services
 
-The following services are planned or under development for future TerminSuite versions:
+The following components are under consideration or planned for future releases:
 
-| Area                    | Planned Service                      | Description                                                                       |
-| ----------------------- | ------------------------------------ | --------------------------------------------------------------------------------- |
-| **Security Monitoring** | **Falco**                            | Host and container activity monitoring for intrusion detection.                   |
-| **Remote Access**       | **RustDesk**                         | Self-hosted remote desktop server (rendezvous + relay) using Cloudflared tunnels. |
-| **Monitoring**          | **Nzyme (Node + Tap)**               | Network packet analysis and IDS telemetry for intrusion detection.                |
-| **WAF**                 | **ModSecurity**                      | Web Application Firewall integrated into Traefik for HTTP filtering.              |
-| **SIEM & IR**           | **TheHive + Cortex + Elasticsearch** | Centralized incident response and log correlation.                                |
-| **Media Expansion**     | **AzuraCast**                        | Internal streaming and radio broadcasting service.                                |
-| **File Storage**        | **Nextcloud**                        | Internal NAS for file storage and user collaboration.                             |
+| Area | Planned Service | Description |
+|------|------------------|-------------|
+| **Security Monitoring** | **Falco** | Host and container activity monitoring for intrusion detection. |
+| **Remote Access** | **RustDesk** | Self-hosted remote desktop (relay + rendezvous) over Cloudflared tunnels. |
+| **Network IDS** | **Nzyme (Node + Tap)** | Network telemetry and packet analysis for IDS and NIDS use cases. |
+| **WAF** | **ModSecurity** | Web Application Firewall integrated with Traefik for HTTP inspection. |
+| **SIEM & IR** | **TheHive + Cortex + Elasticsearch** | Incident response and log correlation stack. |
+| **File Storage** | **Nextcloud** | Internal NAS for file storage and collaboration. |
+| **Media Expansion** | **AzuraCast** | Internal radio and audio streaming service. |
 
 ---
 
-✅ **Status:** Stable <br />
-🔧 **Last Updated:** October 2025 <br />
+✅ **Status:** Stable  
+🔧 **Last Updated:** October 2025  
 📦 **Maintainer:** [Termindiego25](https://github.com/Termindiego25)
