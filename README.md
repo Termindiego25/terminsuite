@@ -53,11 +53,11 @@ Each Raspberry Pi serves a specific purpose, and all communicate internally thro
 
 ---
 
-### 🔐 **[RPi5C](https://github.com/Termindiego25/terminsuite/tree/main/nodes/rpi5c) — Identity and Access Management**
+### 🔐 **[RPi5C](./nodes/rpi5c) — Identity and Access Management**
 
-* **[OpenLDAP](https://github.com/Termindiego25/terminsuite/tree/main/services/openldap)**: Directory service for managing users, groups, and authentication records.
-* **[Keycloak](https://github.com/Termindiego25/terminsuite/tree/main/services/keycloak)**: Centralized SSO platform integrating with OpenLDAP for unified access management.
-* **[Passbolt](https://github.com/Termindiego25/terminsuite/tree/main/services/passbolt)**: Self-hosted password manager for secure credential storage and sharing.
+* **[OpenLDAP](./services/openldap)**: Directory service for managing users, groups, and authentication records.
+* **[Keycloak](./services/keycloak)**: Centralized SSO platform integrating with OpenLDAP for unified access management.
+* **[Passbolt](./services/passbolt)**: Self-hosted password manager for secure credential storage and sharing.
 
 ---
 
